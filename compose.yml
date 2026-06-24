@@ -1,0 +1,69 @@
+services:
+  db:
+   image: yashu565656/pythonlin:databaseimage1.0
+   deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+      ports:
+        - "3306:3306"
+      networks:
+      - mynetwork    
+
+  auth_service:
+    image: yashu565656/pythonlin:authimage1.0
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+      ports:
+        - "5001:5001"
+      networks:
+      - mynetwork
+    depends_on:
+      - db
+
+  borrow_service:
+    image: yashu565656/pythonlin:borrowimage1.0
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+      ports:
+        - "5003:5003"
+      networks:
+      - mynetwork
+    depends_on:
+      - db
+
+  book_service:
+    image: yashu565656/pythonlin:bookimage1.0
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+      ports:
+        - "5002:5002"
+      networks:
+      - mynetwork
+    depends_on:
+      - db
+
+  app:
+    image: yashu565656/pythonlin:appimage1.0
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+      ports:
+        - "5000:5000"
+      networks:
+      - mynetwork
+    depends_on:
+      - auth_service
+      - borrow_service
+      - book_service
+
+networks:
+  mynetwork:
+    driver: bridge   
