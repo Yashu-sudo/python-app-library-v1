@@ -1,3 +1,4 @@
+#wrute a compose for aut db book borrow app
 services:
   db:
    image: yashu565656/pythonlin:databaseimage1.0
@@ -5,10 +6,10 @@ services:
       replicas: 1
       restart_policy:
         condition: on-failure
-      ports:
-        - "3306:3306"
-      networks:
-      - mynetwork    
+   ports:
+      - "3306:3306"
+   networks:
+     - mynetwork    
 
   auth_service:
     image: yashu565656/pythonlin:authimage1.0
@@ -16,9 +17,9 @@ services:
       replicas: 1
       restart_policy:
         condition: on-failure
-      ports:
-        - "5001:5001"
-      networks:
+    ports:
+      - "5001:5001"
+    networks:
       - mynetwork
     depends_on:
       - db
@@ -29,9 +30,9 @@ services:
       replicas: 1
       restart_policy:
         condition: on-failure
-      ports:
-        - "5003:5003"
-      networks:
+    ports:
+      - "5003:5003"
+    networks:
       - mynetwork
     depends_on:
       - db
@@ -42,9 +43,9 @@ services:
       replicas: 1
       restart_policy:
         condition: on-failure
-      ports:
-        - "5002:5002"
-      networks:
+    ports:
+      - "5002:5002"
+    networks:
       - mynetwork
     depends_on:
       - db
@@ -55,9 +56,9 @@ services:
       replicas: 1
       restart_policy:
         condition: on-failure
-      ports:
-        - "5000:5000"
-      networks:
+    ports:
+      - "5000:5000"
+    networks:
       - mynetwork
     depends_on:
       - auth_service
@@ -66,4 +67,4 @@ services:
 
 networks:
   mynetwork:
-    driver: bridge   
+    driver: overlay  
